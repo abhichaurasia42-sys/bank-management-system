@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Send Money</title>
+  <style>
+    body, h1, p, input, button, a {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(to right, #f0f9ff, #e0f2fe);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+      color: #1e3a8a;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      outline: none;
+    }
+
+    .otp-btn {
+      padding: 12px 20px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .otp-btn:hover {
+      background-color: #1e40af;
+      transform: scale(1.03);
+    }
+
+    #message {
+      margin: 15px 0;
+      font-weight: 500;
+    }
+
+    #recipient-name {
+      font-weight: bold;
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: #2563eb;
+      display: block;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #1d4ed8;
+    }
+
+    .section {
+      margin-top: 15px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Send Money</h1>
+
+    <!-- Stage 1: Recipient Account Input -->
+    <div id="stage1">
+      <div class="input-group">
+        <input id="recipientAccount" placeholder="Recipient Account Number" />
+        <button class="otp-btn" onclick="verifyRecipient()">Verify</button>
+      </div>
+      <a href="code4.html" id="back1" class="back-link">← Back to Dashboard</a>
+    </div>
+
+    <!-- Stage 2: Amount Input -->
+    <div id="recipient-info" class="section hidden">
+      Recipient Name: <span id="recipient-name"></span><br/><br/>
+      <div class="input-group">
+        <input id="amount" placeholder="Amount to Send" type="number" />
+        <button class="otp-btn" onclick="requestOTP()">Send OTP</button>
+      </div>
+      <a href="code4.html" id="back2" class="back-link">← Back to Dashboard</a>
+    </div>
+
+    <!-- Stage 3: OTP Input -->
+    <div id="otp-section" class="section hidden">
+      <div class="input-group">
+        <input id="otp" placeholder="Enter OTP" />
+        <button class="otp-btn" onclick="sendMoney()">Send</button>
+      </div>
+      <a href="code4.html" id="back3" class="back-link">← Back to Dashboard</a>
+    </div>
+
+    <p id="message"></p>
+  </div>
+
+  <script>
+    let accountNumber = localStorage.getItem("accountNumber");
+
+    function showOnly(id) {
+      document.getElementById("back1").style.display = "none";
+      document.getElementById("back2").style.display = "none";
+      document.getElementById("back3").style.display = "none";
+
+      if (id === "recipient-info") {
+        document.getElementById("recipient-info").classList.remove("hidden");
+        document.getElementById("back2").style.display = "block";
+      } else if (id === "otp-section") {
+        document.getElementById("otp-section").classList.remove("hidden");
+        document.getElementById("back3").style.display = "block";
+      } else {
+        document.getElementById("back1").style.display = "block";
+      }
+    }
+
+    async function verifyRecipient() {
+      const recipientAccount = document.getElementById("recipientAccount").value.trim();
+      const res = await fetch("/verify-recipient", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accountNumber,recipientAccount }),
+      });
+      const data = await res.json();
+      const msg = document.getElementById("message");
+
+      if (data.success) {
+        document.getElementById("recipient-name").textContent = data.name;
+        showOnly("recipient-info");
+        msg.textContent = "";
+        msg.style.color = "#16a34a";
+      } else {
+        msg.textContent = data.message;
+        msg.style.color = "red";
+      }
+    }
+
+    async function requestOTP() {
+      const res = await fetch("/request-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accountNumber }),
+      });
+      const data = await res.json();
+      document.getElementById("message").textContent = data.message;
+      document.getElementById("message").style.color = "#16a34a";
+      showOnly("otp-section");
+    }
+
+    async function sendMoney() {
+      const recipientAccount = document.getElementById("recipientAccount").value.trim();
+      const amount = document.getElementById("amount").value;
+      const otp = document.getElementById("otp").value;
+
+      const res = await fetch("/send-money", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accountNumber, recipientAccount, amount, otp }),
+      });
+
+      const data = await res.json();
+      const msg = document.getElementById("message");
+      msg.textContent = data.message;
+      msg.style.color = data.success ? "#16a34a" : "red";
+    }
+
+    // Show only the first back link initially
+    showOnly("stage1");
+  </script>
+</body>
+</html>

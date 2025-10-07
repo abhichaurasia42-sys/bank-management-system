@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Infinity Bank - Create Account</title>
+  <link rel="stylesheet" href="styles_3.css" />
+  
+</head>
+<body>
+  <!-- ✅ Top Right Login Button -->
+  <a href="index.html" class="top-right">Login</a>
+
+  <div class="container">
+    <!-- ✅ Left Side: Form Section -->
+    <div class="left-side">
+      <h1>Infinity Bank</h1>
+      <p class="intro-text">
+        Welcome to the future of banking. At <strong>Infinity Bank</strong>, we blend technology with trust to deliver a seamless and secure financial experience.
+        <br /><br />
+        Sign up in minutes and take your first step toward smarter banking.
+      </p>
+
+      <h2>Create Your Account</h2>
+      <form id="registerForm">
+        <div class="row">
+          <input type="text" id="name" placeholder="Enter Name" required />
+          <input type="date" id="dob" required />
+        </div>
+
+        <div class="row">
+          <input type="text" id="aadhaar" placeholder="Aadhaar Number" required />
+          <input type="tel" id="phone" placeholder="Mobile Number" required />
+        </div>
+
+        <div class="row">
+          <input type="text" id="address" placeholder="Address" required />
+        </div>
+
+        <div class="row">
+          <input type="password" id="password" placeholder="Password (min 8 characters)" required />
+          <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+        </div>
+
+        <div class="row">
+          <input type="email" id="email" placeholder="Email ID" required />
+          <button type="button" onclick="sendEmailOTP()">Send OTP</button>
+        </div>
+
+        <div class="row">
+          <input type="text" id="emailOtp" placeholder="Enter Email OTP" />
+          <button type="button" onclick="verifyEmailOTP()">Verify OTP</button>
+        </div>
+
+        <p id="emailStatus" style="color: green;"></p>
+        <p id="message"></p>
+        <p id="accountNumberDisplay" style="font-weight: bold; color: green;"></p>
+        <p id="cardNumberDisplay" style="font-weight: bold; color: blue;"></p> 
+
+        <button type="button" class="btn" onclick="register()">Create Account</button>
+      </form>
+    </div>
+
+    <!-- ✅ Right Side: Centered Info Section -->
+    <div class="right-side">
+      <img src="logo.jpg" alt="Infinity Bank Logo" class="bank-logo" />
+      <h2>Welcome to Infinity Bank</h2>
+      <p>
+        Join millions who trust us with their financial journey.
+        <br /><br />
+        💼 <strong>Easy Account Management</strong><br />
+        🔐 <strong>Secure Transactions</strong><br />
+        ⚡ <strong>Instant Fund Transfers</strong><br />
+        📊 <strong>Real-Time Dashboard</strong><br />
+        💳 <strong>Personalized Debit Cards</strong><br />
+        🧾 <strong>Loan and EMI Assistance</strong>
+      </p>
+      <p style="margin-top: 20px; font-style: italic;">
+        “Your future deserves the Infinity experience.”
+      </p>
+    </div>
+  </div>
+
+  <script>
+    let isEmailVerified = false;
+
+    async function sendEmailOTP() {
+      const email = document.getElementById("email").value;
+      const name = document.getElementById("name").value;
+      const emailStatus = document.getElementById("emailStatus");
+
+      if (!email) {
+        emailStatus.textContent = "Please enter an email address.";
+        emailStatus.style.color = "red";
+        return;
+      }
+
+      const response = await fetch("/request-email-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email }),
+      });
+
+      const data = await response.json();
+      emailStatus.textContent = data.message;
+      emailStatus.style.color = data.success ? "green" : "red";
+    }
+
+    async function verifyEmailOTP() {
+      const email = document.getElementById("email").value;
+      const otp = document.getElementById("emailOtp").value;
+      const emailStatus = document.getElementById("emailStatus");
+
+      if (!otp) {
+        emailStatus.textContent = "Please enter the OTP.";
+        emailStatus.style.color = "red";
+        return;
+      }
+
+      const response = await fetch("/verify-email-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        isEmailVerified = true;
+        emailStatus.textContent = "Email verified successfully!";
+        emailStatus.style.color = "green";
+      } else {
+        emailStatus.textContent = "Invalid or expired OTP.";
+        emailStatus.style.color = "red";
+      }
+    }
+
+    async function register() {
+      const name = document.getElementById("name").value;
+      const dob = document.getElementById("dob").value;
+      const aadhaar = document.getElementById("aadhaar").value;
+      const phone = document.getElementById("phone").value;
+      const email = document.getElementById("email").value;
+      const address = document.getElementById("address").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const message = document.getElementById("message");
+      const accountNumberDisplay = document.getElementById("accountNumberDisplay");
+      const cardNumberDisplay = document.getElementById("cardNumberDisplay");
+
+      if (!name || !dob || !aadhaar || !phone || !email || !address || !password || !confirmPassword) {
+        message.textContent = "All fields are required!";
+        return;
+      }
+
+      if (password.length < 8) {
+        message.textContent = "Password must be at least 8 characters long!";
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        message.textContent = "Passwords do not match!";
+        return;
+      }
+
+      if (!isEmailVerified) {
+        message.textContent = "Please verify your email before registering.";
+        return;
+      }
+
+      try {
+        const response = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, dob, aadhaar, phone, email, address, password }),
+        });
+
+        const result = await response.json();
+        message.textContent = result.message;
+
+        if (result.success) {
+          localStorage.setItem("accountNumber", result.accountNumber);
+          localStorage.setItem("name", result.name);
+          setTimeout(() => {
+            window.location.href = "code4.html";
+          }, 3000);
+        }
+      } catch (error) {
+        message.textContent = "Error connecting to server.";
+      }
+    }
+  </script>
+</body>
+</html>

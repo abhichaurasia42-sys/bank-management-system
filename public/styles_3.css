@@ -1,0 +1,153 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f1f5f9;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Outer Wrapper */
+.container {
+  display: flex;
+  max-width: 1100px;
+  width: 100%;
+  height: auto;
+  background-color: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Side (Form) */
+.left-side {
+  flex: 1;
+  padding: 40px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.left-side h1 {
+  color: #1d4ed8;
+  margin-bottom: 10px;
+}
+
+.left-side p.intro-text {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.left-side h2 {
+  color: #1d4ed8;
+  margin: 20px 0;
+}
+
+/* Form Inputs and Buttons */
+.row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+input, button {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+input {
+  flex: 1;
+  background-color: #f9fafb;
+}
+
+button {
+  background-color: #2563eb;  /* Blue Color */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #1d4ed8;  /* Darker Blue Color */
+  transform: scale(1.02);
+}
+
+.btn {
+  background-color: #233cb6;  /* Blue Color */
+  width: 100%;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  background-color: #0800fe;  /* Bright Blue Color */
+}
+
+/* Email Status and Messages */
+#emailStatus, #message, #accountNumberDisplay, #cardNumberDisplay {
+  font-size: 0.95rem;
+  margin-top: 5px;
+}
+
+/* Right Side (Info Panel) */
+.right-side {
+  flex: 1;
+  background-color: #1e40af;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.right-side h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.right-side p {
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 400px;
+}
+
+.bank-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Top Right Login Button */
+.top-right {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background-color: #fcfcfc;
+  color: rgb(35, 48, 193);
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.top-right:hover {
+  background-color: #2563eb;  /* Blue Color */
+}

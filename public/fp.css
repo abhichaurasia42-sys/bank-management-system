@@ -1,0 +1,130 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(120deg, #d4e0f5, #f5f8ff);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Top-right link */
+.top-right {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    text-decoration: none;
+    color: #0056b3;
+    font-weight: 500;
+    background-color: #ffffffcc;
+    padding: 6px 12px;
+    border-radius: 12px;
+    transition: background 0.3s;
+}
+
+.top-right:hover {
+    background-color: #e3efff;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 500px;
+    background-color: white;
+    padding: 30px;
+    margin: auto;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Section */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.header h2 {
+    color: #003366;
+    font-size: 26px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: 500;
+    color: #003366;
+    margin-top: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: border 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #0078d7;
+}
+
+/* Buttons */
+button {
+    padding: 12px;
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #005bb5;
+}
+
+/* OTP & Password Sections (initially hidden, shown via JS) */
+#otpSection,
+#passwordSection {
+    transition: all 0.5s ease-in-out;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #eef4fb;
+    font-size: 14px;
+    color: #555;
+    margin-top: 40px;
+    border-top: 1px solid #ccc;
+}

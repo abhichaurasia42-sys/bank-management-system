@@ -1,0 +1,116 @@
+/* General Styles */
+body {
+    display: flex;
+    background: url('background.webp') no-repeat center center/cover;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+/* Container */
+.container {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;  /* Reduced width for better centering */
+}
+
+/* Header */
+.header {
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.header p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;  /* Center-aligning form elements */
+}
+
+label {
+    font-size: 16px;
+    color: #333;
+}
+
+input[type="text"], input[type="number"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 80%;  /* Reduced width */
+    max-width: 250px;  /* Controlled input box size */
+    text-align: center;  /* Center text inside input */
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 80%;  /* Button width aligns with input */
+    max-width: 250px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* OTP Section */
+#otp-section {
+    display: none;
+    margin-top: 15px;
+}
+
+/* Success Message */
+.success-message {
+    text-align: center;
+    padding: 15px;
+    background-color: #e0ffe0;
+    border: 1px solid #99cc99;
+    border-radius: 8px;
+}
+
+.success-message p {
+    font-size: 16px;
+    color: #333;
+}
+
+.success-message a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 14px;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.success-message a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+    margin-top: 15px;
+    font-size: 12px;
+    color: gray;
+    text-align: center;
+}
